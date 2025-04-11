@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đặt Bàn Online</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <nav class="navbar">
+    <div class="logo">🍽️ KIMOCHI</div>
+    <ul class="nav-links">
+      <li><a href="book.html">Trang Chủ</a></li>
+      <li><a href="introduction.html">Giới Thiệu</a>
+      </li> <li><a href="feedback.html">Đánh Giá</a></li>
+      <li><a href="contact.html">Liên Hệ</a></li>
+    </ul>
+  </nav>
+
+  <div class="wrapper">
+    <h2><i class="fa-solid fa-utensils"></i> Đặt Bàn Online</h2>
+    <form id="booking-form">
+      <div class="form-group">
+        <label for="name"><i class="fa fa-user"></i> Tên:</label>
+        <input type="text" id="name" required />
+      </div>
+      <div class="form-group">
+        <label for="phone"><i class="fa fa-phone"></i> Điện thoại:</label>
+        <input type="text" id="phone" required />
+      </div>
+      <div class="form-group">
+        <label for="date"><i class="fa fa-calendar"></i> Ngày:</label>
+        <input type="date" id="date" required />
+      </div>
+      <div class="form-group">
+        <label for="time"><i class="fa fa-clock"></i> Giờ:</label>
+        <input type="time" id="time" required />
+      </div>
+      <div class="form-group">
+        <label for="guests"><i class="fa fa-users"></i> Số khách:</label>
+        <input type="number" id="guests" min="1" value="1" required />
+      </div>
+      <button type="submit">Xác nhận đặt bàn</button>
+    </form>
+    <p id="success-message" class="success">✅ Đặt bàn thành công!</p>
+    <div class="button-group">
+      <button onclick="window.location.href='list.html'">📋 Xem Danh Sách Đặt Bàn</button>
+      <button onclick="window.location.href='book.html'">← Quay về Trang Chủ</button>
+    </div>
+  </div>
+  <script>
+    document.getElementById('booking-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const guests = document.getElementById('guests').value;
+
+      if (!name || !phone || !date || !time || !guests) {
+        alert('Vui lòng nhập đầy đủ thông tin.');
+        return;
+      }
+
+      const newBooking = {
+        id: Date.now().toString(),
+        name,
+        phone,
+        date,
+        time,
+        guests
+      };
+
+      const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+      bookings.push(newBooking);
+      localStorage.setItem('bookings', JSON.stringify(bookings));
+
+      const successMessage = document.getElementById('success-message');
+      successMessage.style.display = 'block';
+
+      setTimeout(function () {
+        successMessage.style.display = 'none';
+        window.location.href = 'list.html';
+      }, 2000);
+
+      document.getElementById('booking-form').reset();
+    });
+  </script>
+</body>
+</html>
